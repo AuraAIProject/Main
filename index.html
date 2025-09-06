@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AI Playlist Maker (No CSS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <h1>AI Playlist Maker</h1>
+
+  <!-- Seed song picker -->
+  <section>
+    <h2>Pick your seed songs</h2>
+    <input id="searchBox" type="text" placeholder="Search a song or artist..." />
+    <button id="searchBtn">Search</button>
+    <div id="searchResults"></div>
+
+    <h3>Chosen seeds</h3>
+    <ol id="seedsList"></ol>
+  </section>
+
+  <!-- Options -->
+  <section>
+    <h2>Options</h2>
+    <label>
+      How many suggestions:
+      <input id="howMany" type="number" min="1" max="50" value="15" />
+    </label>
+    <br />
+    <label>
+      Vibe / constraints (optional):
+      <input id="vibe" type="text" placeholder="e.g., upbeat 2010s pop, no explicit lyrics" />
+    </label>
+    <br /><br />
+    <button id="generateBtn">Generate Playlist with AI</button>
+  </section>
+
+  <!-- Output -->
+  <section>
+    <h2>Your AI Playlist</h2>
+    <div id="status"></div>
+    <ol id="playlist"></ol>
+    <button id="exportJsonBtn" disabled>Export JSON</button>
+    <button id="exportM3UBtn" disabled>Export M3U</button>
+  </section>
+
+  <script src="Music.js"></script>
+</body>
+</html>
