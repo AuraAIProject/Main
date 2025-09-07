@@ -1,0 +1,153 @@
+*, html, body{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    list-style: none;
+}
+button {
+  background: none;   /* no background */
+  border: none;       /* no border */
+  font: inherit;      /* use page font */
+  color: inherit;     /* inherit text color */
+  cursor: pointer;    /* show hand cursor */
+  padding: 0.5em 1em; /* give it some clickable space */
+  display: inline-block; /* makes sure it has a box */
+}
+body{
+    background-color: rgb(27, 15, 39);
+}
+#header{
+    background: rgb(27, 15, 39);
+    padding: 5px;
+    color: white;
+}
+
+.search{
+    color: rgb(0, 0, 0);
+}
+#searchBox, button{
+    padding: 6px;
+}
+.home{
+    background-image: url("Waves.png");
+    height:700px;
+     background-position: center;
+     background-size: 1000px;
+}
+#searchResults{
+    background: rgb(71, 47, 1);
+    position: absolute;
+}
+.homeText{
+    text-align: center;
+    
+    padding: 10px;
+    overflow: auto;
+    
+    color: white;
+}
+
+.homeText h2{
+    margin-top: 120px;
+    font-size: 70px;
+    
+}
+.homeText h3{
+    padding-bottom: 50px;
+}
+#searchResults{
+    margin-left: 680px;
+    color: white;
+}
+
+#seedsList{
+   color: white;
+    display:flex;
+    margin: 20px;
+}
+#seedsList li{
+    padding: 20px;
+    
+    
+}
+#seedsList button{
+    padding: 3px;
+    border-radius: 4px;
+    background: red;
+   
+}
+
+
+
+#searchBox{
+    width: 300px;
+    transition: all 0.5s;
+}
+#generateBtn{
+    background-color: greenyellow;
+}
+
+#searchBox:focus{
+    border: 4px solid white;
+    margin-bottom: 10px;
+}
+
+
+#searchResults li{
+    transition: all 0.5s;
+    
+}
+
+#searchResults li:hover {
+
+  background: rgb(224, 182, 44);
+  margin: 20px;
+  color: #222;
+}
+
+.AIGenerations{
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+#playlist{
+    display: flex;
+     flex-direction: row;
+     justify-content: center;
+     flex-wrap: wrap;
+}
+
+#playlist li{
+    background: rgb(243, 148, 243);
+    box-shadow: 4px 6px 3px white;
+    border-radius: 40px;
+    height: 300px;
+    width: 25%;
+    padding: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.homeText .options{
+    margin-top: 20px;
+    padding: 5px;
+    background: rgb(165, 82, 165);
+    border-radius: 2px;
+}
+
+.hamburger{
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    z-index: 10;
+}
+
+.bun{
+    height: 4px;
+    width: 30px;
+    border-radius: 2px;
+    background-color: black;
+    margin-bottom: 3px;
+}

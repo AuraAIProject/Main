@@ -4,45 +4,67 @@
   <meta charset="utf-8" />
   <title>AI Playlist Maker (No CSS)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>AI Playlist Maker</h1>
-
+  <header>
+  
+</header>
   <!-- Seed song picker -->
-  <section>
-    <h2>Pick your seed songs</h2>
-    <input id="searchBox" type="text" placeholder="Search a song or artist..." />
-    <button id="searchBtn">Search</button>
+
+  <section class="home">
+    <!-- <h1 id="header">AI Playlist Maker</h1> -->
+     <div class="option">
+      <div  onclick="toggleOption(this)" class="hamburger">
+      <div class="bun"></div>
+      <div class="bun"></div>
+      <div class="bun"></div>
+      </div>
+      <h4>Options</h4>
+      <h6>How many suggestions:</h6>
+      <input id="howMany" type="number" min="1" max="50" value="9" />
+      
+      <h6>Vibe / constraints (optional):</h6>
+      <input id="vibe" type="text" placeholder="e.g., upbeat 2010s pop, no explicit lyrics" />
+     </div>
+    <div class="homeText">
+    <h2>Explore Discover Create</h2>
+    <h3>Make your vibe using AI</h3>
+    
+    <div class="search">
+      <input id="searchBox" type="text" placeholder="Search a song or artist..." />
+      <button id="generateBtn" onclick="generatePlaylist()">Generate Playlist with AI</button>
+    </div>
+
+    <!-- <button class="options" onclick="toggleOption(this)">Options</button> -->
+
+    <!-- <button id="searchBtn">Search</button> -->
+    
+
+    
+    </div>
     <div id="searchResults"></div>
-
-    <h3>Chosen seeds</h3>
-    <ol id="seedsList"></ol>
+    
   </section>
-
+  <ol id="seedsList"></ol>
   <!-- Options -->
-  <section>
-    <h2>Options</h2>
-    <label>
-      How many suggestions:
-      <input id="howMany" type="number" min="1" max="50" value="15" />
-    </label>
+  <section class="AIGenerations">
+   
     <br />
     <label>
-      Vibe / constraints (optional):
-      <input id="vibe" type="text" placeholder="e.g., upbeat 2010s pop, no explicit lyrics" />
-    </label>
-    <br /><br />
-    <button id="generateBtn">Generate Playlist with AI</button>
-  </section>
-
-  <!-- Output -->
-  <section>
-    <h2>Your AI Playlist</h2>
+     
+      <h2>Your AI Playlist</h2>
     <div id="status"></div>
     <ol id="playlist"></ol>
     <button id="exportJsonBtn" disabled>Export JSON</button>
     <button id="exportM3UBtn" disabled>Export M3U</button>
+    </label>
+    <br /><br />
+    
   </section>
+
+  <!-- Output -->
+    
 
   <script src="Music.js"></script>
 </body>

@@ -1,10 +1,29 @@
     const $ = (id) => document.getElementById(id);
-    alert("Hi")
     const state = {
       seeds: [],     // { title, artist, itunesId? }
       playlist: []   // { title, artist, reason, matchScore, artworkUrl, previewUrl, itunesUrl }
     };
 
+  let searchTimeout;
+  $('searchBox').oninput = (e) => {
+  clearTimeout(searchTimeout);
+  const term = e.target.value.trim();
+  if (!term) {
+    $('searchResults').textContent = '';
+    return;
+  }
+
+  searchTimeout = setTimeout(async () => {
+    $('searchResults').textContent = 'Searching...';
+    try {
+      const results = await searchItunes(term);
+      renderSearch(results);
+    } catch (err) {
+      console.error(err);
+      $('searchResults').textContent = 'Search failed.';
+    }
+  }, 500); // waits 0.5s after typing stops
+};
     // --- iTunes search (no key needed) ---
     async function searchItunes(term) {
       const url = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=musicTrack&limit=8`;
@@ -28,60 +47,92 @@
     }
 
     function renderSearch(results) {
-      const container = $('searchResults');
-      container.innerHTML = '';
-      if (results.length === 0) {
-        container.textContent = 'No results.';
-        return;
-      }
-      const list = document.createElement('ol');
-      results.forEach((r, idx) => {
-        const li = document.createElement('li');
-        const btn = document.createElement('button');
-        btn.textContent = 'Add';
-        btn.onclick = () => addSeed(r);
-        li.appendChild(btn);
+  const container = $('searchResults');
+  container.innerHTML = '';
+  if (results.length === 0) {
+    container.textContent = 'No results.';
+    return;
+  }
+  const list = document.createElement('ol');
+  results.forEach((r) => {
+    const li = document.createElement('li');
+    li.style.cursor = "pointer"; // show it’s clickable
 
-        const img = document.createElement('img');
-        img.src = r.artworkUrl;
-        img.alt = 'cover';
-        img.width = 50;
-        img.height = 50;
-        li.appendChild(img);
+    // thumbnail
+    const img = document.createElement('img');
+    img.src = r.artworkUrl;
+    img.alt = 'cover';
+    img.width = 50;
+    img.height = 50;
+    li.appendChild(img);
 
-        const text = document.createElement('span');
-        text.textContent = ` ${r.title} — ${r.artist}`;
-        li.appendChild(text);
+    // text
+    const text = document.createElement('span');
+    text.textContent = ` ${r.title} — ${r.artist}`;
+    li.appendChild(text);
 
-        list.appendChild(li);
-      });
-      container.appendChild(list);
-    }
+    // click adds seed
+    li.onclick = () => addSeed(r);
+
+    list.appendChild(li);
+  });
+  container.appendChild(list);
+}
 
     function renderSeeds() {
-      const ol = $('seedsList');
-      ol.innerHTML = '';
-      state.seeds.forEach((s, i) => {
-        const li = document.createElement('li');
-        li.textContent = `${s.title} — ${s.artist} `;
-        const rm = document.createElement('button');
-        rm.textContent = 'Remove';
-        rm.onclick = () => {
-          state.seeds.splice(i, 1);
-          renderSeeds();
-        };
-        li.appendChild(rm);
-        ol.appendChild(li);
-      });
+  const ol = $('seedsList');
+  ol.innerHTML = '';
+
+  state.seeds.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.style.display = 'flex';
+    li.style.alignItems = 'center';
+    li.style.gap = '8px';
+    li.style.margin = '6px 0';
+
+    // ✅ Add cover image if available
+    if (s.artworkUrl) {
+      const img = document.createElement('img');
+      img.src = s.artworkUrl;
+      img.alt = 'cover';
+      img.width = 40;
+      img.height = 40;
+      img.style.borderRadius = '6px';
+      li.appendChild(img);
     }
 
-    function addSeed(track) {
-      // Dedup by title+artist
-      const key = (t) => `${t.title.toLowerCase()}|${t.artist.toLowerCase()}`;
-      if (state.seeds.some(s => key(s) === key(track))) return;
-      state.seeds.push({ title: track.title, artist: track.artist, itunesId: track.itunesId || null });
+    // ✅ Add song text
+    const text = document.createElement('span');
+    text.textContent = `${s.title} — ${s.artist}`;
+    li.appendChild(text);
+
+    // ✅ Add remove button
+    const rm = document.createElement('button');
+    rm.textContent = 'X';
+    rm.style.marginLeft = 'auto'; // pushes remove button to the right
+    rm.onclick = () => {
+      state.seeds.splice(i, 1);
       renderSeeds();
-    }
+    };
+    li.appendChild(rm);
+
+    ol.appendChild(li);
+  });
+}
+    
+
+    function addSeed(track) {
+  const key = (t) => `${t.title.toLowerCase()}|${t.artist.toLowerCase()}`;
+  if (state.seeds.some(s => key(s) === key(track))) return;
+
+  state.seeds.push({
+    title: track.title,
+    artist: track.artist,
+    artworkUrl: track.artworkUrl || null
+  });
+
+  renderSeeds();
+}
 
     async function enrichTrackWithItunes(track) {
       // Use iTunes to grab artwork/preview/link for a given "title + artist"
@@ -145,7 +196,10 @@
       $('exportJsonBtn').disabled = state.playlist.length === 0;
       $('exportM3UBtn').disabled = state.playlist.length === 0;
     }
+    function toggleOption(that){
+    document.querySelector('.hidden').classList.toggle('show')
 
+    }
     function downloadFile(filename, contents) {
       const blob = new Blob([contents], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
@@ -178,6 +232,7 @@
         alert('Add at least one seed song first.');
         return;
       }
+      
       const howMany = parseInt($('howMany').value, 10) || 15;
       const vibe = $('vibe').value.trim();
 
@@ -196,7 +251,7 @@
         const enriched = await Promise.all(ai.tracks.map(enrichTrackWithItunes));
         state.playlist = enriched;
         renderPlaylist();
-        $('status').textContent = 'Done.';
+        $('status').textContent = '';
       } catch (err) {
         console.error(err);
         $('status').textContent = 'Something went wrong. Check the console.';
@@ -218,4 +273,3 @@
         $('searchResults').textContent = 'Search failed.';
       }
     };
-    $('generateBtn').onclick = generatePlaylist;
