@@ -57,7 +57,7 @@ body{
     padding-bottom: 50px;
 }
 #searchResults{
-    margin-left: 680px;
+    margin-left: 31%;
     color: white;
 }
 
@@ -144,10 +144,35 @@ body{
     z-index: 10;
 }
 
+.option{
+    width: 150px;
+    height: 100vh;
+    padding: 100px 20px;
+    background-color: rgb(106, 43, 106);
+    position: fixed;
+    right: -190px;
+    top: 0;
+    transition: all 0.3s;
+    color: white;
+    text-align: center;
+}
+.option h4{
+    font-size: 30px;
+    margin-right:10px;
+    margin-bottom: 30px;
+}
+.option input{
+    margin-bottom: 20px;
+    padding: 5px;
+}
+.option.show{
+    right: 0;
+}
+
 .bun{
     height: 4px;
     width: 30px;
     border-radius: 2px;
-    background-color: black;
+    background-color: white;
     margin-bottom: 3px;
 }

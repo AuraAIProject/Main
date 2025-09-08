@@ -39,7 +39,11 @@
         itunesUrl: r.trackViewUrl || null
       }));
     }
-
+    function toggleOption(that){
+      console.log("clicked")
+      let nav = that.parentNode
+      nav.classList.toggle('show')
+    }
     function artwork600(url100) {
       if (!url100) return null;
       // Typically you can replace 100x100 with 600x600 for higher-res artwork.
@@ -195,10 +199,6 @@
 
       $('exportJsonBtn').disabled = state.playlist.length === 0;
       $('exportM3UBtn').disabled = state.playlist.length === 0;
-    }
-    function toggleOption(that){
-    document.querySelector('.hidden').classList.toggle('show')
-
     }
     function downloadFile(filename, contents) {
       const blob = new Blob([contents], { type: 'text/plain;charset=utf-8' });
